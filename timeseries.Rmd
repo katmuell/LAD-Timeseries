@@ -35,7 +35,7 @@ rownames(subjectA_counts_t) <- subjectA_key$V1
 subjectA_otus <- otu_table(subjectA_counts_t, taxa_are_rows = TRUE)
 ```
 
-Turn key files into taxa format for phyloseq
+Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
 ```{r}
 subjectA_taxa <- subjectA_key
 row.names(subjectA_taxa) <- subjectA_taxa$V1
