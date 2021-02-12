@@ -27,12 +27,24 @@ subjectB_counts <- read.delim(subjectB_counts_file, sep = " ", header = FALSE)
 subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
 ```
 
-Turn count dataframes into OTU format for phyloseq
+Turn count dataframes into OTU format for phyloseq. Because the taxa assignments are the same, I will combine subject A and subject B into one dataframe.
 ```{r}
 subjectA_counts_t <- t(subjectA_counts)
 subjectA_counts_t <- row_to_names(subjectA_counts_t, 1)
+colnames(subjectA_counts_t) <- paste("A", colnames(subjectA_counts_t), sep = "_")
 rownames(subjectA_counts_t) <- subjectA_key$V1
-subjectA_otus <- otu_table(subjectA_counts_t, taxa_are_rows = TRUE)
+
+subjectB_counts_t <- t(subjectB_counts)
+subjectB_counts_t <- row_to_names(subjectB_counts_t, 1)
+colnames(subjectB_counts_t) <- paste("B", colnames(subjectB_counts_t), sep = "_")
+rownames(subjectB_counts_t) <- subjectB_key$V1
+
+counts_table <- merge(subjectA_counts_t, subjectB_counts_t, by = 0, all = TRUE)
+#remove timepoints with no sequencing results
+emptycols <- sapply(counts_table, function (x) all(is.na(x)))
+counts_table <- counts_table[!emptycols]
+
+otus <- otu_table(counts_table, taxa_are_rows = TRUE)
 ```
 
 Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
