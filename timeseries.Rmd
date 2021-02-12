@@ -7,6 +7,7 @@ output: html_document
 ```{r}
 library(janitor)
 library(dplyr)
+library(tidyr)
 library(phyloseq)
 ```
 
@@ -21,15 +22,25 @@ subjectB_key_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeser
 Open count and key files as dataframes
 ```{r}
 subjectA_counts <- read.delim(subjectA_counts_file, sep = " ", header = FALSE)
-subjectA_taxa <- read.delim(subjectA_key_file, sep = "\t", header = FALSE)
+subjectA_key <- read.delim(subjectA_key_file, sep = "\t", header = FALSE)
 subjectB_counts <- read.delim(subjectB_counts_file, sep = " ", header = FALSE)
-subjectB_taxa <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
+subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
 ```
 
 Turn count dataframes into OTU format for phyloseq
 ```{r}
 subjectA_counts_t <- t(subjectA_counts)
 subjectA_counts_t <- row_to_names(subjectA_counts_t, 1)
-rownames(subjectA_counts_t) <- subjectA_taxa$V1
+rownames(subjectA_counts_t) <- subjectA_key$V1
 subjectA_otus <- otu_table(subjectA_counts_t, taxa_are_rows = TRUE)
+```
+
+Turn key files into taxa format for phyloseq
+```{r}
+subjectA_taxa <- subjectA_key
+row.names(subjectA_taxa) <- subjectA_taxa$V1
+subjectA_taxa$V3 <- substring(subjectA_taxa$V3, 4)
+subjectA_taxa <- subjectA_taxa %>%
+  select(V3) %>%
+  separate(V3, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ";.__")
 ```
