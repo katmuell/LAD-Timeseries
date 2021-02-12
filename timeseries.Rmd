@@ -29,13 +29,17 @@ subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
 
 Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
 ```{r}
+#Get rid of the k__ infront of the taxa names
 subjectA_key$V1 <- substring(subjectA_key$V1, 6)
+```
+```{r}
 subjectA_taxa <- subjectA_key
 row.names(subjectA_taxa) <- subjectA_taxa$V1
 subjectA_taxa$V3 <- substring(subjectA_taxa$V3, 4)
 subjectA_taxa <- subjectA_taxa %>%
   select(V3) %>%
   separate(V3, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ";.__")
+#class(row.names(subjectA_taxa)) <- "numeric"
 subjectA_tax_table <- subjectA_taxa %>%
   as.matrix(subjectA_taxa) %>%
   tax_table()
@@ -54,13 +58,11 @@ colnames(subjectB_counts_t) <- paste("B", colnames(subjectB_counts_t), sep = "_"
 rownames(subjectB_counts_t) <- subjectB_key$V1
 
 counts_table <- merge(subjectA_counts_t, subjectB_counts_t, by = 0, all = TRUE)
-#remove timepoints with no sequencing results
-emptycols <- sapply(counts_table, function (x) all(is.na(x)))
-counts_table <- counts_table[!emptycols]
+row.names(counts_table) <- counts_table$Row.names
+counts_table <- counts_table %>%
+  select(-Row.names)
 
-counts_matrix <- as.matrix(counts_table)
-class(counts_matrix) <- "numeric"
-otus <- otu_table(counts_matrix, taxa_are_rows = TRUE)
+otus <- otu_table(counts_table, taxa_are_rows = TRUE)
 ```
 
 Make phyloseq objects
