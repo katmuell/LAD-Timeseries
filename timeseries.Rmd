@@ -1,0 +1,30 @@
+---
+title: "Timeseries analysis"
+author: "Katherine Mueller"
+date: "2/12/2021"
+output: html_document
+---
+```{r}
+library(janitor)
+library(dplyr)
+```
+
+```{r}
+subjectA_counts_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectA.gut.M"
+subjectA_key_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectA.gut.key"
+subjectB_counts_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectB.gut.M"
+subjectB_key_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectB.gut.key"
+```
+
+```{r}
+subjectA_counts <- read.delim(subjectA_counts_file, sep = " ", header = FALSE)
+subjectA_taxa <- read.delim(subjectA_key_file, sep = "\t", header = FALSE)
+subjectB_counts <- read.delim(subjectB_counts_file, sep = " ", header = FALSE)
+subjectB_taxa <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
+```
+
+```{r}
+subjectA_counts_t <- t(subjectA_counts)
+subjectA_counts_t <- row_to_names(subjectA_counts_t, 1)
+rownames(subjectA_counts_t) <- subjectA_taxa$V3
+```
