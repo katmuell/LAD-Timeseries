@@ -29,6 +29,7 @@ subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
 
 Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
 ```{r}
+subjectA_key$V1 <- substring(subjectA_key$V1, 6)
 subjectA_taxa <- subjectA_key
 row.names(subjectA_taxa) <- subjectA_taxa$V1
 subjectA_taxa$V3 <- substring(subjectA_taxa$V3, 4)
@@ -57,11 +58,13 @@ counts_table <- merge(subjectA_counts_t, subjectB_counts_t, by = 0, all = TRUE)
 emptycols <- sapply(counts_table, function (x) all(is.na(x)))
 counts_table <- counts_table[!emptycols]
 
-otus <- otu_table(counts_table, taxa_are_rows = TRUE)
+counts_matrix <- as.matrix(counts_table)
+class(counts_matrix) <- "numeric"
+otus <- otu_table(counts_matrix, taxa_are_rows = TRUE)
 ```
 
 Make phyloseq objects
 ```{r}
-subjectA_ps <- phyloseq(subjectA_otus, subjectA_tax_table)
+subjectA_ps <- phyloseq(otus, subjectA_tax_table)
 subjectA_ps
 ```
