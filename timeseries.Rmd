@@ -43,4 +43,13 @@ subjectA_taxa$V3 <- substring(subjectA_taxa$V3, 4)
 subjectA_taxa <- subjectA_taxa %>%
   select(V3) %>%
   separate(V3, c("Kingdom", "Phylum", "Class", "Order", "Family", "Genus", "Species"), sep = ";.__")
+subjectA_tax_table <- subjectA_taxa %>%
+  as.matrix(subjectA_taxa) %>%
+  tax_table()
+```
+
+Make phyloseq objects
+```{r}
+subjectA_ps <- phyloseq(subjectA_otus, subjectA_tax_table)
+subjectA_ps
 ```
