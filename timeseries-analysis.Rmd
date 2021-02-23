@@ -35,3 +35,21 @@ The alpha diversity plots aren't very nice looking, so export them for use in pr
 alphas = estimate_richness(LADseries.ps, measures = c("Observed", "Shannon"))
 write.csv(alphas, alpha_metrics)
 ```
+
+Prune for taxa that have 3 reads in at least 50 samples.
+```{r}
+sample_min_count = 50
+LADseries.sample_prune = LADseries.ps %>%
+  prune_samples(sample_sums(.) >= sample_min_count, .)
+
+min_count = 3
+min_sample = 2
+prune.vec = filter_taxa(LADseries.sample_prune,
+                        function(x) sum(x >= min_count) >= min_sample)
+```
+Transform to even sampling depth
+```{r}
+LADseries.even = transform_sample_counts(LADseries.sample_prune, function(x) 1E6 * x/sum(x))
+LADseries.prune.even = prune_taxa(prune.vec, LADseries.even)
+ntaxa(LADseries.prune.even)
+```
