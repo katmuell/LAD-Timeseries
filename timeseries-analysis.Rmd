@@ -11,3 +11,27 @@ library(phyloseq)
 library(ggplot2)
 ```
 
+Read in phyloseq object
+```{r}
+LADseries.ps.rds = "../../Data\ for\ Analysis/LAD_time.rds"
+LADseries.ps = readRDS(LADseries.ps.rds)
+LADseries.ps
+```
+Filepaths
+```{r}
+alpha_metrics = file.path("../../Data\ for\ Analysis/alpha_metrics.csv")
+```
+
+Plot alpha diversity scores across time
+```{r}
+plot_richness(LADseries.ps, x = "day",
+              measures = c("Observed"), color = "individual")
+plot_richness(LADseries.ps, x = "day",
+              measures = c("Shannon"), color = "individual")
+```
+
+The alpha diversity plots aren't very nice looking, so export them for use in prism.
+```{r}
+alphas = estimate_richness(LADseries.ps, measures = c("Observed", "Shannon"))
+write.csv(alphas, alpha_metrics)
+```
