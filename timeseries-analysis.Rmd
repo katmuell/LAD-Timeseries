@@ -53,3 +53,11 @@ LADseries.even = transform_sample_counts(LADseries.sample_prune, function(x) 1E6
 LADseries.prune.even = prune_taxa(prune.vec, LADseries.even)
 ntaxa(LADseries.prune.even)
 ```
+
+Calculate Bray-Curtis disimilarity
+```{r}
+set.seed(1)
+LADseries.prune.even.bc <- ordinate(LADseries.prune.even, "PCoA", "bray", trymax=100, try=30)
+plot_ordination(LADseries.prune.even, LADseries.prune.even.bc, color = "day", shape = "individual") + geom_line(aes(fill = "individual"))
+```
+
