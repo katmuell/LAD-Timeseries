@@ -26,7 +26,7 @@ subjectA_counts <- read.delim(subjectA_counts_file, sep = " ", header = FALSE)
 subjectA_key <- read.delim(subjectA_key_file, sep = "\t", header = FALSE)
 subjectB_counts <- read.delim(subjectB_counts_file, sep = " ", header = FALSE)
 subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
-metadata <- read.delim(metadata_file, sep = "\t", header = TRUE)
+metadata <- read.delim(metadata_file, sep = "\t", row.names = 1)
 ```
 
 Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
@@ -67,8 +67,13 @@ counts_table <- counts_table %>%
 otus <- otu_table(counts_table, taxa_are_rows = TRUE)
 ```
 
+Turn metadata into sample data format for phyloseq.
+```{r}
+sampledata <- sample_data(metadata)
+```
+
 Make phyloseq objects
 ```{r}
-subjectA_ps <- phyloseq(otus, subjectA_tax_table)
+subjectA_ps <- phyloseq(otus, subjectA_tax_table, sampledata)
 subjectA_ps
 ```
