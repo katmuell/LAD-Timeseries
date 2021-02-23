@@ -1,5 +1,5 @@
 ---
-title: "Timeseries analysis"
+title: "Timeseries Setup"
 author: "Katherine Mueller"
 date: "2/12/2021"
 output: html_document
