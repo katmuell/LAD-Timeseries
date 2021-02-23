@@ -13,11 +13,11 @@ library(phyloseq)
 
 Set file locations for count and key files
 ```{r}
-subjectA_counts_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectA.gut.M"
-subjectA_key_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectA.gut.key"
-subjectB_counts_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectB.gut.M"
-subjectB_key_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Original\ Data/share/microbiota/subjectB.gut.key"
-metadata_file <- "C:/Users/katmu/Dropbox/Valdivia\ Lab/Projects/LAD\ Timeseries/Data\ for\ Analysis/metadata.txt"
+subjectA_counts_file <- "../../Original\ Data/share/microbiota/subjectA.gut.M"
+subjectA_key_file <- "../../Original\ Data/share/microbiota/subjectA.gut.key"
+subjectB_counts_file <- "../../Original\ Data/share/microbiota/subjectB.gut.M"
+subjectB_key_file <- "../../Original\ Data/share/microbiota/subjectB.gut.key"
+metadata_file <- "../../Data\ for\ Analysis/metadata.txt"
 ```
 
 Open metadata, count, and key files as dataframes
@@ -26,7 +26,7 @@ subjectA_counts <- read.delim(subjectA_counts_file, sep = " ", header = FALSE)
 subjectA_key <- read.delim(subjectA_key_file, sep = "\t", header = FALSE)
 subjectB_counts <- read.delim(subjectB_counts_file, sep = " ", header = FALSE)
 subjectB_key <- read.delim(subjectB_key_file, sep = "\t", header = FALSE)
-metadata <- read.delim(metadata_file, sep = "\t", header = FALSE)
+metadata <- read.delim(metadata_file, sep = "\t", header = TRUE)
 ```
 
 Turn key files into taxa format for phyloseq. The OTU identifiers and taxa assignments are the same between both key files, so I only need one.
