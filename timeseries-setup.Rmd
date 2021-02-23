@@ -59,7 +59,7 @@ rownames(subjectA_counts_t) <- subjectA_key$V1
 subjectB_counts_t <- t(subjectB_counts)
 subjectB_counts_t <- row_to_names(subjectB_counts_t, 1)
 colnames(subjectB_counts_t) <- paste("B", colnames(subjectB_counts_t), sep = "_")
-rownames(subjectB_counts_t) <- subjectB_key$V1
+rownames(subjectB_counts_t) <- subjectA_key$V1
 
 counts_table <- merge(subjectA_counts_t, subjectB_counts_t, by = 0, all = TRUE)
 row.names(counts_table) <- counts_table$Row.names
