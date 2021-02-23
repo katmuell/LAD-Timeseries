@@ -19,7 +19,7 @@ subjectA_key_file <- "../../Original\ Data/share/microbiota/subjectA.gut.key"
 subjectB_counts_file <- "../../Original\ Data/share/microbiota/subjectB.gut.M"
 subjectB_key_file <- "../../Original\ Data/share/microbiota/subjectB.gut.key"
 metadata_file <- "../../Data\ for\ Analysis/metadata.txt"
-LAD_time.ps <- file.path("../../Data\ for\ Analysis/LAD_time.ps")
+LAD_time.rds <- file.path("../../Data\ for\ Analysis/LAD_time.rds")
 ```
 
 Open metadata, count, and key files as dataframes
@@ -78,5 +78,5 @@ Make phyloseq objects
 ```{r}
 ps <- phyloseq(otus, subjectA_tax_table, sampledata)
 ps
-write_rds(ps, LAD_time.ps)
+write_rds(ps, LAD_time.rds)
 ```
